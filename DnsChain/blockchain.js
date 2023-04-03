@@ -6,7 +6,35 @@ const { DomainRegistry } = require("./smartContract");
 const { DnsCoin } = require("./wallet.js");
 
 const ec = new EC("secp256k1");
+class Block {
+  constructor(timestamp, transactions, previousHash = "") {
+    this.timestamp = timestamp;
+    this.transactions = transactions;
+    this.previousHash = previousHash;
+    this.hash = this.calculateHash();
+    this.nonce = 0;
+  }
 
+  calculateHash() {
+    return SHA256(
+      this.previousHash +
+        this.timestamp +
+        JSON.stringify(this.transactions) +
+        this.nonce
+    ).toString();
+  }
+
+  mineBlock(difficulty) {
+    while (
+      this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")
+    ) {
+      this.nonce++;
+      this.hash = this.calculateHash();
+    }
+
+    console.log("Block mined:", this.hash);
+  }
+}
 class Blockchain {
   constructor() {
     this.chain = [this.createGenesisBlock()];
@@ -14,6 +42,7 @@ class Blockchain {
     this.difficulty = 2;
     this.minerReward = 100;
     this.smartContract = new DomainRegistry();
+    this.dnsCoin = new DnsCoin();
   }
 
   createGenesisBlock() {
@@ -44,7 +73,7 @@ class Blockchain {
     );
     block.mineBlock(this.difficulty);
 
-    DnsCoin.add(minerWallet, reward);
+    this.dnsCoin.add(minerAddress, this.minerReward);
     console.log("Block successfully mined!");
     this.chain.push(block);
 
@@ -59,10 +88,9 @@ class Blockchain {
     if (!transaction.isValid()) {
       throw new Error("Cannot add invalid transaction to chain");
     }
-
     if (
       transaction.to === this.smartContract.getPublicKey() &&
-      transaction.data.type === "smartContract"
+      transaction.type === "smartContract"
     ) {
       this.pendingTransactions.push(transaction);
       this.smartContract.processTransaction(transaction);
@@ -84,36 +112,6 @@ class Blockchain {
     }
 
     return true;
-  }
-}
-
-class Block {
-  constructor(timestamp, transactions, previousHash = "") {
-    this.timestamp = timestamp;
-    this.transactions = transactions;
-    this.previousHash = previousHash;
-    this.hash = this.calculateHash();
-    this.nonce = 0;
-  }
-
-  calculateHash() {
-    return SHA256(
-      this.previousHash +
-        this.timestamp +
-        JSON.stringify(this.transactions) +
-        this.nonce
-    ).toString();
-  }
-
-  mineBlock(difficulty) {
-    while (
-      this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")
-    ) {
-      this.nonce++;
-      this.hash = this.calculateHash();
-    }
-
-    console.log("Block mined:", this.hash);
   }
 }
 

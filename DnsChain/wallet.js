@@ -21,22 +21,22 @@ class DnsCoin {
     this.balance = {};
   }
 
-  add(wallet, amount) {
-    if (!this.balance[wallet.publicKey]) {
-      this.balance[wallet.publicKey] = 0;
+  add(publicKey, amount) {
+    if (!this.balance[publicKey]) {
+      this.balance[publicKey] = 0;
     }
-    this.balance[wallet.publicKey] += amount;
+    this.balance[publicKey] += amount;
   }
 
-  subtract(wallet, amount) {
-    if (!this.balance[wallet.publicKey]) {
+  subtract(publicKey, amount) {
+    if (!this.balance[publicKey]) {
       throw new Error("Insufficient balance");
     }
-    this.balance[wallet.publicKey] -= amount;
+    this.balance[publicKey] -= amount;
   }
 
-  getBalance(wallet) {
-    return this.balance[wallet.publicKey] || 0;
+  getBalance(publicKey) {
+    return this.balance[publicKey] || 0;
   }
 }
 module.exports = { Wallet, DnsCoin };
