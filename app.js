@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 app.set("view engine", "ejs");
-
+app.use(express.static("public"));
 const { Blockchain } = require("./DnsChain/blockchain");
 const { Wallet } = require("./DnsChain/wallet");
 const { Transaction } = require("./DnsChain/transaction");
@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register-domain", (req, res) => {
+  console.log("register domain", req.body);
   const publicKey = req.body.publicKey;
   const wallet = wallets[publicKey];
   const { domain, ip } = req.body;

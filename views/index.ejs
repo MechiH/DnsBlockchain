@@ -4,186 +4,209 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blockchain Domain Registry</title>
-    <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      table {
-        border-collapse: collapse;
-        margin-top: 1rem;
-      }
-
-      table th,
-      table td {
-        padding: 0.5rem;
-        border: 1px solid black;
-      }
-
-      table th {
-        text-align: left;
-        background-color: #eee;
-      }
-    </style>
+    <!-- Bootstrap CSS file -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
-    <h1>Blockchain Domain Registry</h1>
-
     <div class="container">
-      <h2>Register Domain</h2>
-      <form id="register-domain-form">
-        <label for="public-key">Public Key:</label>
-        <select id="public-key" required>
-          <% Object.keys(wallets).forEach(publicKey => { %>
-          <option value="<%= publicKey %>"><%= publicKey %></option>
-          <% }); %>
-        </select>
-        <label for="domain">Domain:</label>
-        <input type="text" id="domain" required />
-        <label for="ip">IP:</label>
-        <input type="text" id="ip" required />
-        <button type="submit">Register Domain</button>
-      </form>
-
-      <h2>Transfer Domain</h2>
-      <form id="transfer-domain-form">
-        <label for="public-key">Public Key:</label>
-        <select id="public-key" required>
-          <% Object.keys(wallets).forEach(publicKey => { %>
-          <option value="<%= publicKey %>"><%= publicKey %></option>
-          <% }); %>
-        </select>
-        <label for="domain">Domain:</label>
-        <input type="text" id="domain-transform" required />
-        <label for="new-owner">New Owner:</label>
-        <select id="new-owner" required>
-          <% Object.keys(wallets).forEach(publicKey => { %>
-          <option value="<%= publicKey %>"><%= publicKey %></option>
-          <% }); %>
-        </select>
-        <button type="submit">Transfer Domain</button>
-      </form>
-
-      <h2>Mine Block</h2>
-      <form id="mine-block-form">
-        <label for="public-key">Public Key:</label>
-        <select id="public-key" required>
-          <% Object.keys(wallets).forEach(publicKey => { %>
-          <option value="<%= publicKey %>"><%= publicKey %></option>
-          <% }); %>
-        </select>
-        <button type="submit">Mine Block</button>
-      </form>
+      <h1 class="my-5">Blockchain Domain Registry</h1>
+      <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            data-bs-toggle="tab"
+            href="#registered-domains"
+            >Registered Domains</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#user-section"
+            >User Section</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#miner-section"
+            >Miner Section</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="wallet-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#wallet"
+            type="button"
+            role="tab"
+            aria-controls="wallet"
+            aria-selected="false"
+          >
+            Wallet
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="registered-domains">
+          <!-- Registered Domains table -->
+          <h2 class="my-3">Registered Domains</h2>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              id="search-input"
+              class="form-control"
+              placeholder="Search domain or IP"
+            />
+          </div>
+          <table class="table" id="domains-table">
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>IP</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% domains.forEach(domain => { %>
+              <tr>
+                <td><%= domain.domain %></td>
+                <td><%= domain.ip %></td>
+                <td><%= domain.owner %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="wallet"
+          role="tabpanel"
+          aria-labelledby="wallet-tab"
+        >
+          <h2 class="my-3">Create Wallet</h2>
+          <form id="wallet-form">
+            <div class="mb-3">
+              <label for="wallet-name" class="form-label">Wallet Name:</label>
+              <input
+                type="text"
+                id="wallet-name"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="public-key-wallet" class="form-label"
+                >Public Key:</label
+              >
+              <input type="text" id="public-key-wallet"" class="form-control"
+              readonly />
+            </div>
+            <div class="mb-3">
+              <label for="private-key" class="form-label">Private Key:</label>
+              <input
+                type="text"
+                id="private-key"
+                class="form-control"
+                readonly
+              />
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Name:</label>
+              <input type="text" id="name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" id="email" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address:</label>
+              <input type="text" id="address" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Create Wallet</button>
+          </form>
+        </div>
+        <div class="tab-pane fade" id="user-section">
+          <!-- Register Domain form -->
+          <form id="register-domain-form">
+            <div class="mb-3">
+              <label for="public-key" class="form-label">Public Key:</label>
+              <select id="public-key" class="form-control" required>
+                <% Object.keys(wallets).forEach(publicKey => { %>
+                <option value="<%= publicKey %>"><%= publicKey %></option>
+                <% }); %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="domain" class="form-label">Domain:</label>
+              <input type="text" id="domain" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="ip" class="form-label">IP:</label>
+              <input type="text" id="ip" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Register Domain
+            </button>
+          </form>
+          <!-- Transfer Domain form -->
+          <form id="transfer-domain-form">
+            <div class="mb-3">
+              <label for="public-key" class="form-label">Public Key:</label>
+              <select id="public-key" class="form-control" required>
+                <% Object.keys(wallets).forEach(publicKey => { %>
+                <option value="<%= publicKey %>"><%= publicKey %></option>
+                <% }); %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="domain-transform" class="form-label">Domain:</label>
+              <input
+                type="text"
+                id="domain-transform"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="new-owner" class="form-label">New Owner:</label>
+              <select id="new-owner" class="form-control" required>
+                <% Object.keys(wallets).forEach(publicKey => { %>
+                <option value="<%= publicKey %>"><%= publicKey %></option>
+                <% }); %>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Transfer Domain
+            </button>
+          </form>
+        </div>
+        <div class="tab-pane fade" id="miner-section">
+          <!-- Mine Block form -->
+          <form id="mine-block-form">
+            <div class="mb-3">
+              <label for="public-key" class="form-label">Public Key:</label>
+              <select id="public-key" class="form-control" required>
+                <% Object.keys(wallets).forEach(publicKey => { %>
+                <option value="<%= publicKey %>"><%= publicKey %></option>
+                <% }); %>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Mine Block</button>
+          </form>
+        </div>
+      </div>
     </div>
+    <!-- Bootstrap JS files -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
 
-    <h2>Registered Domains</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Domain</th>
-          <th>IP</th>
-          <th>Owner</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% domains.forEach(domain => { %>
-        <tr>
-          <td><%= domain.domain %></td>
-          <td><%= domain.ip %></td>
-          <td><%= domain.owner %></td>
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
-
-    <script>
-      // Get form elements
-      const registerDomainForm = document.getElementById(
-        "register-domain-form"
-      );
-      const transferDomainForm = document.getElementById(
-        "transfer-domain-form"
-      );
-      const mineBlockForm = document.getElementById("mine-block-form");
-
-      // Helper function for making AJAX requests
-      async function makeRequest(url, method, data) {
-        const response = await fetch(url, {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.text();
-      }
-
-      // Handle Register Domain form submission
-      registerDomainForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const publicKey = document.getElementById("public-key").value;
-        const domain = document.getElementById("domain").value;
-        const ip = document.getElementById("ip").value;
-
-        const formData = new FormData();
-        formData.append("publicKey", publicKey);
-        formData.append("domain", domain);
-        formData.append("ip", ip);
-        const data = Object.fromEntries(formData);
-
-        try {
-          await makeRequest("/register-domain", "POST", data);
-          window.location.reload();
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      });
-
-      // Handle Transfer Domain form submission
-      transferDomainForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const publicKey = document.getElementById("public-key").value;
-        const domain = document.getElementById("domain-transform").value;
-        const newOwner = document.getElementById("new-owner").value;
-
-        const formData = new FormData();
-        formData.append("publicKey", publicKey);
-        formData.append("domain", domain);
-        formData.append("newOwner", newOwner);
-        const data = Object.fromEntries(formData);
-
-        try {
-          await makeRequest("/transfer-domain", "POST", data);
-          window.location.reload();
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      });
-
-      // Handle Mine Block form submission
-      mineBlockForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const publicKey = document.getElementById("public-key").value;
-
-        const formData = new FormData();
-        formData.append("publicKey", publicKey);
-
-        try {
-          await makeRequest("/mine-block", "POST", formData);
-          window.location.reload();
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      });
-    </script>
+    <script src="/js/index.js"></script>
   </body>
 </html>
