@@ -1,4 +1,11 @@
 {
+  "name": "DnsChain",
+  "version": "1.0.0",
+  "description": "A Dns registry Based ona custom blockchain",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "body-parser": "^1.20.2",
     "crypto-js": "^4.1.1",

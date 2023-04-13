@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
     wallets: wallets,
     minerWalletPublicKey: minerWallet.getPublicKey(),
     domains: DomainRegistry.getAllDomains(),
-    myBlockchain: myBlockchain,
+    blockchain: myBlockchain,
   });
 });
 
