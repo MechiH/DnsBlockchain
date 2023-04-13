@@ -1,5 +1,6 @@
 const EC = require("elliptic").ec;
 const ec = new EC("secp256k1");
+const { Transaction } = require("./transaction");
 
 class DomainRegistry {
   constructor() {
@@ -43,6 +44,7 @@ class DomainRegistry {
 
   processTransaction(transaction) {
     const { method, payload } = transaction.data;
+    console.log("Processing transaction", method, payload);
     switch (method) {
       case "registerDomain":
         const { from, registerDomain, ip } = payload;

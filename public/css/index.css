@@ -1,0 +1,14 @@
+/* Add custom styles here */
+.form-label {
+  margin-bottom: 0.5rem;
+}
+.form-control {
+  margin-bottom: 1rem;
+}
+table {
+  margin-top: 1rem;
+}
+table th {
+  text-align: left;
+  background-color: #eee;
+}
