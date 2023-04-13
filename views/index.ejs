@@ -11,7 +11,7 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/index.css" />
   </head>
   <body>
     <div class="container">
@@ -33,6 +33,12 @@
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="tab" href="#miner-section"
             >Miner Section</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#blockchain-section"
+            >Blockchain Section</a
           >
         </li>
         <li class="nav-item" role="presentation">
@@ -102,8 +108,12 @@
               <label for="public-key-wallet" class="form-label"
                 >Public Key:</label
               >
-              <input type="text" id="public-key-wallet"" class="form-control"
-              readonly />
+              <input
+                type="text"
+                id="public-key-wallet"
+                class="form-control"
+                readonly
+              />
             </div>
             <div class="mb-3">
               <label for="private-key" class="form-label">Private Key:</label>
@@ -128,6 +138,62 @@
             </div>
             <button type="submit" class="btn btn-primary">Create Wallet</button>
           </form>
+        </div>
+        <div class="tab-pane fade" id="blockchain-section">
+          <h2 class="my-3">Blockchain</h2>
+          <div class="d-flex flex-wrap align-items-center">
+            <% blockchain.chain.forEach((block, index) => { %>
+            <div
+              class="card mb-3 me-3 shadow-lg"
+              style="width: var(--card-width)"
+            >
+              <div class="card-header">Block <%= index %></div>
+              <div class="card-body">
+                <p class="card-text">
+                  <strong>Hash:</strong><br />
+                  <span class="transaction" id="hash-<%= index %>"
+                    ><%= block.hash %></span
+                  >
+                </p>
+                <p class="card-text">
+                  <strong>Previous Hash:</strong><br />
+                  <span class="transaction" id="prev-hash-<%= index %>"
+                    ><%= block.previousHash %></span
+                  >
+                </p>
+                <button
+                  class="btn btn-sm btn-dark mb-2"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#transactions-<%= index %>"
+                >
+                  Toggle Transactions
+                </button>
+                <ul
+                  class="list-group list-group-flush collapse"
+                  id="transactions-<%= index %>"
+                >
+                  <% block.transactions.forEach((transaction, index) => { %>
+                  <li class="list-group-item">
+                    <div class="transaction">
+                      <strong>From:</strong> <%= transaction.from %> <br />
+                      <strong>To:</strong> <%= transaction.to %> <br />
+                      <strong>Type:</strong> <%= transaction.type %> <br />
+                      <strong>Amount:</strong> <%= transaction.amount %>
+                    </div>
+                  </li>
+                  <% }); %>
+                </ul>
+                <p class="card-text">
+                  <strong>Timestamp:</strong><br />
+                  <span class="transaction"
+                    ><%= new Date(block.timestamp).toLocaleString() %></span
+                  >
+                </p>
+              </div>
+            </div>
+            <% }); %>
+          </div>
         </div>
         <div class="tab-pane fade" id="user-section">
           <!-- Register Domain form -->
@@ -206,7 +272,9 @@
       integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
       crossorigin="anonymous"
     ></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/@jsplumb/browser-ui@4.0.0-RC28/umd/index.js"></script>
+    <script src="https://unpkg.com/@jsplumb/connector-bezier@4.0.0-RC28/umd/index.js"></script>
     <script src="/js/index.js"></script>
   </body>
 </html>

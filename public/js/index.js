@@ -119,3 +119,29 @@ searchInput.addEventListener("keyup", () => {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const jsPlumbInstance = jsPlumb.newInstance({
+    container: document.querySelector("body"),
+  });
+
+  // Set default connector settings
+  jsPlumbInstance.importDefaults({
+    connector: { type: "Bezier", options: { curviness: 100 } },
+    anchor: ["Right", "Left"],
+    endpoint: "Blank",
+    paintStyle: { strokeWidth: 3, stroke: "#8a2be2" },
+  });
+
+  // Connect hash and previous hash elements
+  const numOfBlocks = document.querySelectorAll(".card").length;
+  for (let i = 1; i < numOfBlocks; i++) {
+    const source = document.querySelector("#hash-" + (i - 1));
+    const target = document.querySelector("#prev-hash-" + i);
+    jsPlumbInstance.connect({
+      source: source,
+      target: target,
+      overlays: [["Arrow", { location: 0.5, width: 15, length: 15 }]],
+    });
+  }
+});

@@ -12,3 +12,47 @@ table th {
   text-align: left;
   background-color: #eee;
 }
+:root {
+  --primary-color: #218cff;
+  --secondary-color: #b81649;
+  --background-color: #f5f5f5;
+  --font-color: white;
+  --card-width: 20rem;
+}
+.card-header {
+  background-color: var(--primary-color);
+  color: var(--font-color);
+  font-weight: bold;
+  font-size: 1.25rem;
+  border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+  background-color: var(--background-color);
+  border-radius: 0 0 10px 10px;
+}
+.card {
+  position: relative;
+}
+.card-text {
+  margin-bottom: 1rem;
+}
+
+.transaction {
+  font-size: 0.9rem;
+  background-color: var(--background-color);
+  line-height: 1.5;
+  word-break: break-all;
+}
+.arrow-container {
+  position: absolute;
+  top: 0;
+  left: 100%;
+}
+.arrow {
+  stroke: var(--secondary-color);
+  stroke-width: 2;
+  fill: var(--secondary-color);
+  display: flex;
+  align-items: center;
+}
